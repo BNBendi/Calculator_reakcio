@@ -9,8 +9,11 @@ const CalcComp: React.FC = () => {
     const [calc, setCalc] = useState<number | string>("");
     const [op, setOp] = useState<string>("");
     const [history, setHistory] = useState<string[]>([]);
+    
 
     const inp1Ref = useRef<HTMLInputElement>(null);
+
+    
 
     useEffect(() => {
         console.log("szíja")
@@ -20,13 +23,11 @@ const CalcComp: React.FC = () => {
         e.preventDefault();
         
         if( inp1 === ""){
-            alert("kérem minden adatot adjon meg")
             inp1Ref.current?.focus();
             return;
         }
 
         if( inp2 === ""){
-            alert("kérem minden adatot adjon meg")
             inp1Ref.current?.focus();
             return;
         }
@@ -55,6 +56,12 @@ const CalcComp: React.FC = () => {
         setInp1("");
         setInp2("");
         inp1Ref.current?.focus();
+
+        const newEntry = `${inp1} ${op} ${inp2} = ${result}`
+        setHistory(prev => [...history, newEntry]);
+
+
+
     }
 
     useEffect (() => {
@@ -84,8 +91,15 @@ const CalcComp: React.FC = () => {
                     value={calc}
                 />
             </article>
-            <button className="bg-amber-300 pt-0.5 pb-0.5 pl-1 pr-1 rounded-lg" type="submit">Számol</button>
+            <div className="felx justify-center gap-1">
+                <button className="bg-amber-300 pt-0.5 pb-0.5 pl-1 pr-1 rounded-lg mr-1" type="submit">Számol</button>
+                <button className="bg-amber-300 pt-0.5 pb-0.5 pl-1 pr-1 rounded-lg " type="submit" onClick={() => setHistory([])}>Törlés</button>
+            </div>
+
+            <ul>{history.map((item, index) => (<li key={index}>{item}</li>))}</ul>
         </form>
+        
+        
     )
 }
 
